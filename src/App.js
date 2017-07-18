@@ -1,9 +1,23 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import postQuery from './post/query'
+import Posts from './post/Posts'
 
 class App extends Component {
+
+  state = {
+    posts: []
+  }
+
+  componentDidMount() {
+    postQuery(5)
+    .then(({ allPosts: posts }) => this.setState({ posts }))
+    .catch(error => console.error(error[0]))
+  }
+
   render() {
+    const { posts } = this.state
     return (
       <div className="App">
         <div className="App-header">
@@ -13,6 +27,7 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
+        <Posts posts={posts} />
       </div>
     );
   }
